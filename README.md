@@ -5,7 +5,7 @@
 
 <p> Showcasing different software design patterns to simplify and create more elegant code </p>
 
-###Patterns used
--Command
--Factory
--Strategy
+ -Patterns used
+  -Command
+  -Factory
+  -Strategy

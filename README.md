@@ -6,6 +6,12 @@
 <p> Showcasing different software design patterns to simplify and create more elegant code </p>
 
 <h4> Patterns used </h4>
+
+
   *Command
+  
+  
   *Factory
+  
+  
   *Strategy

@@ -1,0 +1,210 @@
+----------------------------------
+Paint Save File Format Version 1.0
+----------------------------------
+
+The Paint Save File Format allows the serialization
+of a users Paint creation into a plain text file.
+
+------------------
+Presentation Notes
+------------------
+
+As this document describes a files
+format, we denote sample files with lines 
+
+------------------ START EXAMPLE -----------------
+------------------ END   EXAMPLE -----------------
+
+-----------------
+Minimal Save File
+-----------------
+
+A minimal file consists of 
+
+------------------ START EXAMPLE -----------------
+PaintSaveFileVersion1.0
+EndPaintSaveFile
+------------------ END   EXAMPLE -----------------
+
+---------------
+Normative Rules
+---------------
+- The paint save file format ignores blank lines
+- The paint save file format ignores white space
+
+This means that if a file parses, and then all white
+space and empty lines are removed, then the resulting
+file will also parse correctly. Similarly, if a file
+parses, and arbitrary white space is added to each line,
+and arbitrary empty lines are added, the resulting
+file will still parse. This convention is adopted to
+simplify parsing of the presented format. That is,
+when parsing a file, the parser should normalize
+the input by ignoring all blank lines, 
+and remove all white space from 
+non-blank lines.
+
+The following example normalizes to the above
+simplest example, so this will also parse.
+------------------ START EXAMPLE -----------------
+
+
+PaintSave   File Version 1.0
+
+End Paint Sa  ve File
+
+
+------------------ END   EXAMPLE -----------------
+
+------
+Shapes
+------
+
+The format allows the storing of three different types of
+shapes, Circle, Rectangle and Squiggle. Each of these shapes
+has its own block. The format
+allows an arbitrary number of these shapes to appear
+in the file in any order. To correctly render an image based
+on a sequence of shapes in a file, simply render the shapes
+in order from the top of the file to the bottom, with later shapes
+appearing on top of earlier shapes.
+
+------
+Circle
+------
+A block describing a circle consists of start and end
+markers: "Circle" and "EndCircle" each on a line by themselves.
+Inside the block, the following must appear in the specified
+order...
+
+color:r,g,b
+filled:v
+center(x,y)
+radius:r
+
+Where 
+- r,g,b are integer values in the range 0,...,255
+- v is either "true" or "false"
+- x,y,r are non-negative integers.
+
+------------------ START EXAMPLE -----------------
+Circle
+	color:255,0,0
+	filled:true
+	center:(123,58)
+	radius:11
+EndCircle
+------------------ END   EXAMPLE -----------------
+
+The above describes a red filled in circle center (123,58)
+with radius 11. 
+
+Below is a complete example
+of a file with two circles.
+
+------------------ START EXAMPLE -----------------
+Paint Save File Version 1.0
+Circle
+	color:81,240,22
+	filled:false
+	center:(65,62)
+	radius:9
+End Circle
+Circle
+	color:25,76,32
+	filled:true
+	center:(123,58)
+	radius:11
+End Circle
+End Paint Save File
+------------------ END   EXAMPLE -----------------
+
+---------
+Rectangle
+---------
+A rectangle block looks like the following. Features
+are all required and appear in the specified order.
+
+------------------ START EXAMPLE -----------------
+Rectangle
+	color:36,18,161
+	filled:false
+	p1:(62,102)
+	p2:(138,110)
+End Rectangle
+------------------ END   EXAMPLE -----------------
+
+where p1 and p2 are two corners of the rectangle.
+
+--------
+Squiggle
+--------
+A squiggle block appears as follows.
+color, filled and points appears in the
+specified order. Any number of point lines
+can appear inside the points block.
+
+------------------ START EXAMPLE -----------------
+Squiggle
+	color:115,164,133
+	filled:true
+	points
+		point:(87,82)
+		point:(87,84)
+	end points
+End Squiggle
+------------------ END   EXAMPLE -----------------
+
+--------------
+A full example
+--------------
+
+------------------ START EXAMPLE -----------------
+Paint Save File Version 1.0
+Circle
+	color:81,240,22
+	filled:false
+	center:(65,62)
+	radius:9
+End Circle
+Circle
+	color:25,76,32
+	filled:true
+	center:(123,58)
+	radius:11
+End Circle
+Squiggle
+	color:115,164,133
+	filled:true
+	points
+		point:(87,82)
+		point:(87,84)
+		point:(87,85)
+		point:(87,86)
+		point:(87,87)
+		point:(86,88)
+		point:(87,88)
+		point:(88,88)
+		point:(89,88)
+		point:(93,88)
+		point:(98,88)
+		point:(103,88)
+		point:(107,88)
+		point:(108,88)
+		point:(107,88)
+		point:(106,88)
+		point:(106,87)
+		point:(106,86)
+		point:(105,86)
+		point:(105,85)
+		point:(105,84)
+	end points
+End Squiggle
+Rectangle
+	color:36,18,161
+	filled:false
+	p1:(62,102)
+	p2:(138,110)
+End Rectangle
+End Paint Save File
+------------------ END   EXAMPLE -----------------
